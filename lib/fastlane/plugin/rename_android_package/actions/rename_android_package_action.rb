@@ -13,14 +13,9 @@ module Fastlane
         new_folder = new_package_name.gsub('.', '/')
         new_folder_path = "#{path}/app/src/main/java/#{new_folder}"
 
-        FileUtils::mkdir_p new_folder_path
+        FileUtils.mv "#{path}/app/src/main/java/#{old_folder}/*", new_folder_path
 
-        java_sources = Dir.glob("#{path}/app/src/main/java/#{folder}/*.java")
-        java_sources.each do |file|
-          FileUtils.mv file, new_folder_path
-        end
-
-       Bundler.with_unbundled_env do
+        Bundler.with_clean_env do
           sh "find #{path}/app/src -name '*.java' -type f -exec sed -i '' 's/#{package_name}/#{new_package_name}/' {} \\;"
           sh "find #{path}/app/src -name 'AndroidManifest.xml' -type f -exec sed -i '' 's/#{package_name}/#{new_package_name}/' {} \\;"
           sh "find #{path}/app -name 'build.gradle' -type f -exec sed -i '' 's/#{package_name}/#{new_package_name}/' {} \\;"
