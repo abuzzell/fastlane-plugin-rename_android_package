@@ -11,9 +11,9 @@ module Fastlane
 
         folder = package_name.gsub('.', '/')
         new_folder = new_package_name.gsub('.', '/')
-        new_folder_path = "#{path}/app/src/main/java/#{new_folder}"
+        new_folder_path = "#{path}app/src/main/java/#{new_folder}"
 
-        FileUtils.mv "#{path}/app/src/main/java/#{folder}/*", new_folder_path
+        FileUtils.mv "#{path}app/src/main/java/#{folder}/*", new_folder_path
 
         Bundler.with_clean_env do
           sh "find #{path}/app/src -name '*.java' -type f -exec sed -i '' 's/#{package_name}/#{new_package_name}/' {} \\;"
